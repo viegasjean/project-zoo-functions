@@ -1,4 +1,3 @@
-const en = require('faker/lib/locales/en');
 const { prices } = require('../data/zoo_data');
 const data = require('../data/zoo_data');
 
@@ -17,7 +16,7 @@ function countEntrants(entrants) {
       }
       return acc;
     },
-    { child: 0, adult: 0, senior: 0 }
+    { child: 0, adult: 0, senior: 0 },
   );
   return classified;
 }
@@ -28,11 +27,9 @@ function calculateEntry(entrants) {
     return 0;
   }
   const entrant = countEntrants(entrants);
-  accPrice =
-    entrant.child * prices.child +
-    entrant.adult * prices.adult +
-    entrant.senior * prices.senior;
-  return accPrice;
+  return entrant.child * prices.child
+            + entrant.adult * prices.adult
+            + entrant.senior * prices.senior;
 }
 
 module.exports = { calculateEntry, countEntrants };
