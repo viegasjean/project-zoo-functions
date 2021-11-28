@@ -1,4 +1,4 @@
-const data = require('../data/zoo_data');
+/* const data = require('../data/zoo_data');
 const { hours, species } = require('../data/zoo_data');
 function getSchedule(scheduleTarget) {
   const days = Object.entries(hours)
@@ -28,4 +28,4 @@ function getSchedule(scheduleTarget) {
 }
 getSchedule('Monday')
 
-module.exports = getSchedule;
+module.exports = getSchedule; */
