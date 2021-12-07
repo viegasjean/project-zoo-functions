@@ -1,37 +1,33 @@
-/* const { species } = require('../data/zoo_data');
+const { species } = require('../data/zoo_data');
 const data = require('../data/zoo_data');
 
-function filterSortedAndSex(sorted, specie, sex) {
-  if (sorted) {
-    specie.residents.sort((a, b) => (a.name > b.name ? 1 : -1));
+function filterAndSort(options, specie) {
+  let residentsName = [];
+  if (options && options.sex) { // Verifica se a o objeto com a chave sex é passado como parametro da função
+    residentsName = specie.residents
+      .filter((resident) => resident.sex === options.sex) // Filtra pelo sexo
+      .map((resident) => resident.name); // Mapeia somente o nome
+  } else {
+    residentsName = specie.residents.map((resident) => resident.name); // Mapeia somente o nome
   }
-}
 
-function filterIncludeNames(options, specie, result, speciesByLocation) {
-  const { sex, includeNames, sorted } = options;
-  if (includeNames) {
-    filterSortedAndSex(sorted, specie, sex);
+  // Verifica se o objeto com a chave sort é passado como parametro da função e ordena os nomes
+  if (options && options.sorted) residentsName.sort();
 
-    specie.residents.forEach((resident) => {
-      result[specie.name].push(resident.name);
-    });
-
-    speciesByLocation[specie.location].push(result);
-  }
-  if (!includeNames || !options) speciesByLocation[specie.location].push(specie.name);
+  return { [specie.name]: residentsName };
 }
 
 function getAnimalMap(options) {
-  const speciesByLocation = {};
-  species.forEach((specie) => {
-    if (!speciesByLocation[specie.location]) speciesByLocation[specie.location] = []; // cria uma localização, senão existir
-    const result = {};
-    result[specie.name] = [];
-    if (!options) return speciesByLocation[specie.location].push(specie.name);
-    filterIncludeNames(options, specie, result, speciesByLocation);
-  });
-  return speciesByLocation;
+  return species.reduce((speciesByLocation, specie) => {
+    const result = filterAndSort(options, specie);
+    if (options && options.includeNames) { // Verifica se o objeto com a chave includeNames é passado como parametro
+      speciesByLocation[specie.location].push(result); // inclui nomes
+    } else {
+      speciesByLocation[specie.location].push(...Object.keys(result)); // não inclui nomes
+    }
+
+    return speciesByLocation;
+  }, { NE: [], NW: [], SE: [], SW: [] }); // inicia o objeto com as chaves e inicia um array como parametro
 }
 
 module.exports = getAnimalMap;
- */
